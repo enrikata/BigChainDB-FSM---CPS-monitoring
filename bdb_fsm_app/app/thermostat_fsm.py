@@ -83,8 +83,9 @@ class FSM:
         to_init_state = getattr(self, 'to_' + init_state)
         to_init_state()
         self.update_inputs(inputs)
-        to_final_state = getattr(self, 'may_' + final_state)
-        if to_final_state():
+        to_final_state = self.get_transition()
+        if to_final_state:
+            to_final_state()
+        if self.state == final_state:
             return True
-        else:
-            return False
+        return False
