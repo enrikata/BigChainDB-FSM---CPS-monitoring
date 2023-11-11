@@ -1,0 +1,97 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-row align-items-center">
+                <div class="col-auto">
+                    <label for="startDate" class="mr-2">Start Date:</label>
+                    <input type="date" id="startDate" name="Start date" value="" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <label for="endDate" class="mr-2">End Date:</label>
+                    <input type="date" id="endDate" name="End date" value="" class="form-control">
+                </div>
+                <div class="col-auto mt-4">
+                    <button type="button" id="button" onclick="getData()" class="btn btn-primary">Get Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h1>Finite State Machine Graph</h1>
+            <img src="" alt="Grafico" id="fsm_img" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h1>State Transitions Graph</h1>
+            <img src="" alt="Grafico" id="states_img" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h1>Inputs Graph</h1>
+            <img src="" alt="Grafico" id="input_img" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h1>Outputs Graph</h1>
+            <img src="" alt="Grafico" id="output_img" class="img-fluid">
+        </div>
+    </div>
+
+    <script>
+        var startDate = document.getElementById('startDate');
+        var endDate = document.getElementById('endDate');
+        var fsm_img = document.getElementById('fsm_img');
+        var states_img = document.getElementById('states_img');
+        var input_img = document.getElementById('input_img');
+        var output_img = document.getElementById('output_img');
+
+        var today = new Date()
+        var today = today.toISOString().slice(0,10)
+
+        startDate.value = today
+        endDate.value = today
+        
+        function getData() {
+
+            selectedStartDate = startDate.value
+            selectedEndDate = endDate.value
+
+            var parameters = {
+                startDate: selectedStartDate,
+                endDate: selectedEndDate
+            };
+
+            var queryString = new URLSearchParams(parameters).toString();
+            var url = `/graphimages?${queryString}`;
+
+            fetch(url).then(response => response.json()).then(data => {
+                fsm_img.src = "data:image/png;base64," + data.fsm_img_str;
+                states_img.src = "data:image/png;base64," + data.states_img_str;
+                input_img.src = "data:image/png;base64," + data.input_img_str;
+                output_img.src = "data:image/png;base64," + data.output_img_str;
+            });
+        }
+        
+        getData()
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

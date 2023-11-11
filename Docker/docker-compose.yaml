@@ -1,0 +1,31 @@
+version: '3'
+services:
+  Member1:
+    image: bdb
+    volumes:
+      - ./member1/tendermint:/root/ftp
+    command: sh -c "if [ ! -d /root/.tendermint ]; then mkdir /root/.tendermint && cp -r /root/ftp/* /root/.tendermint; fi && service mongodb start && nohup bigchaindb start & nohup tendermint node"
+    networks:
+      bdbnetwork:
+        ipv4_address: 172.18.0.3
+  Member2:
+    image: bdb
+    volumes:
+      - ./member2/tendermint:/root/ftp
+    command: sh -c "if [ ! -d /root/.tendermint ]; then mkdir /root/.tendermint && cp -r /root/ftp/* /root/.tendermint; fi && service mongodb start && nohup bigchaindb start & nohup tendermint node"
+    networks:
+      bdbnetwork:
+        ipv4_address: 172.18.0.4
+  Member3:
+    image: bdb
+    volumes:
+      - ./member3/tendermint:/root/ftp
+    command: sh -c "if [ ! -d /root/.tendermint ]; then mkdir /root/.tendermint && cp -r /root/ftp/* /root/.tendermint; fi && service mongodb start && nohup bigchaindb start & nohup tendermint node"
+    networks:
+      bdbnetwork:
+        ipv4_address: 172.18.0.5
+    
+
+networks:
+  bdbnetwork:
+    external: true
