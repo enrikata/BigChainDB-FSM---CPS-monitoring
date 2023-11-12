@@ -61,7 +61,6 @@ class FSM:
         if transition is not None:
             transition()
             final_state=self.state
-        output = self.get_output()
 
         fsm_info = {
             'data':{
